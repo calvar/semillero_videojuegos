@@ -24,12 +24,12 @@ def inicializar(Arb):
 
 def imprimir(Arb):
     if not Arb.hijos:
-        print Arb.jugada,
+        print "[." + str(Arb.jugada) + " ]",
     else:
-        print "[",
+        print "[." + str(Arb.jugada) + " ",
         for h in Arb.hijos:
             imprimir(h)
-        print "]"
+        print " ]",
 
 def imprimir_opciones(Arb):
     if not Arb.hijos:
@@ -37,8 +37,8 @@ def imprimir_opciones(Arb):
     else:
         print "[",
         for h in Arb.hijos:
-            imprimir_opciones(h)
-        print "]",
+            imprimir_opciones(h),
+        print "]"
 
 Opciones = range(1, 4)
 print "Opciones: ", Opciones
@@ -46,5 +46,4 @@ B = Tree(None,None,Opciones,[])
 B.hijos = inicializar(B)
 print "Objetos creados con exito!"
 print "\n"
-print B
-imprimir_opciones(B)
+imprimir(B)

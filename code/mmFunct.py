@@ -63,6 +63,15 @@ def minmax(myTree):
         #print("esta es una hoja y su puntaje es {}".format(myTree.score))
         return myTree.score
     else:
+        if myTree.symbol=='x':
+            Max=0
+            for p in myTree.pointers:
+                if Max<p.score:
+                    Max=p.score
+            myTree.score=Max
+        else:
+            
+        
         #print("esta no es una hoja voy a recursion!")
         aux = []
         for t in myTree.pointers:

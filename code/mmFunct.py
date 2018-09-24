@@ -7,7 +7,7 @@ def printConfig(config):
             print(config[i][j]," ",end="")
         print()
 
-        
+
 def win(config):
     """Recieve a tic-tac-toe board configuration.
     Return if a symbol has won the match, and the symbol"""
@@ -70,17 +70,8 @@ def minmax(myTree):
                     Max=p.score
             myTree.score=Max
         else:
-            
-        
-        #print("esta no es una hoja voy a recursion!")
-        aux = []
-        for t in myTree.pointers:
-            aux.append(minmax(t))
-        #print("scores: ",aux)
-        #return max(aux)
-             
-        if myTree.currentSymb == 'o':
-#            print(minmax(myTree.pointers[0].score))
-            return max(aux) 
-        else:
-            return min(aux)
+            Min=0
+            for p in myTree.pointers:
+                if Min<p.score:
+                    Min=p.score
+            myTree.score=Min

@@ -59,19 +59,30 @@ def nextConfig(config, symb):
 
 def minmax(myTree):
     #print("pointers: ",myTree.pointers)
-    if  len(myTree.pointers) == 0:
+    #print(len(myTree.pointers),myTree.level)
+    #p = myTree.printBranch()
+    if  not myTree.pointers:
         #print("esta es una hoja y su puntaje es {}".format(myTree.score))
         return myTree.score
     else:
-        if myTree.symbol=='x':
+        if myTree.currentSymb=='o':
             Max=0
+            #print("pointers o: ",myTree.pointers)
             for p in myTree.pointers:
-                if Max<p.score:
-                    Max=p.score
+                #print("buscando en hijos de o")
+                aux = minmax(p)
+                if Max<aux:
+                    Max=aux
             myTree.score=Max
+            return Max
         else:
-            Min=0
+            Min=1e10
+            #print("pointers x: ",myTree.pointers)
             for p in myTree.pointers:
-                if Min<p.score:
-                    Min=p.score
+                #print("buscando en hijos de x")
+                #print("camila\n")
+                aux = minmax(p)
+                if Min>aux:
+                    Min=aux
             myTree.score=Min
+            return Min

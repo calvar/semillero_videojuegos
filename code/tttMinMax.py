@@ -22,19 +22,32 @@ iniTree.addPointers()
 # p = iniTree.getPointers([4,0,4,1,0,2,0,0,0])
 # p.printBranch()
 
-mf.minmax(iniTree)
+iniTree.score = mf.minmax(iniTree)
 
-p = iniTree.getPointers([0,0,1,1,0])
+p = iniTree.getPointers([0,0,0,0,0,0,1])
+print(p.pointers)
 p.printBranch()
 
-p = iniTree.getPointers([0,0,1,1,1])
+p = iniTree.getPointers([0,0,0,0,0,0,1,1])
+print(p.pointers)
 p.printBranch()
 
-p = iniTree.getPointers([0,0,1,1,2])
+p = iniTree.getPointers([0,0,0,0,0,0,1,1,0])
 p.printBranch()
 
-p = iniTree.getPointers([0,0,1,1,3])
-p.printBranch()
+print(iniTree.score)
 
-p = iniTree.getPointers([0,0,1,1,4])
-p.printBranch()
+#p = iniTree.getPointers([0,0,0,0,0,0,2])
+#p.printBranch()
+
+# p = iniTree.getPointers([0,0,1,1,1])
+# p.printBranch()
+
+# p = iniTree.getPointers([0,0,1,1,2])
+# p.printBranch()
+
+# p = iniTree.getPointers([0,0,1,1,3])
+# p.printBranch()
+
+# p = iniTree.getPointers([0,0,1,1,4])
+# p.printBranch()

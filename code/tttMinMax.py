@@ -9,6 +9,7 @@ iniTree = tree.Tree(0, maxLev, 'o', iniConf)
 #add the branches
 iniTree.addPointers()
 
+iniTree.score = mf.minmax(iniTree)
 
 # #Win
 # p = iniTree.getPointers([0,0,1,1,2])
@@ -22,32 +23,26 @@ iniTree.addPointers()
 # p = iniTree.getPointers([4,0,4,1,0,2,0,0,0])
 # p.printBranch()
 
-iniTree.score = mf.minmax(iniTree)
 
-p = iniTree.getPointers([0,0,0,0,0,0,1])
-print(p.pointers)
-p.printBranch()
-
-p = iniTree.getPointers([0,0,0,0,0,0,1,1])
-print(p.pointers)
-p.printBranch()
-
-p = iniTree.getPointers([0,0,0,0,0,0,1,1,0])
-p.printBranch()
-
-print(iniTree.score)
-
-#p = iniTree.getPointers([0,0,0,0,0,0,2])
-#p.printBranch()
-
-# p = iniTree.getPointers([0,0,1,1,1])
+# p = iniTree.getPointers([])
+# print(p.pointers)
 # p.printBranch()
 
-# p = iniTree.getPointers([0,0,1,1,2])
+# p = iniTree.getPointers([0,1,0,0,0])
+# print(p.pointers)
 # p.printBranch()
 
-# p = iniTree.getPointers([0,0,1,1,3])
+# p = iniTree.getPointers([0,1,0,0,0,0])
+# print(p.pointers)
 # p.printBranch()
 
-# p = iniTree.getPointers([0,0,1,1,4])
+# p = iniTree.getPointers([0,1,0,0,0,0,0])
+# print(p.pointers)
 # p.printBranch()
+
+# p = iniTree.getPointers([0,1,0,0,0,0,0,1])
+# print(p.pointers)
+# p.printBranch()
+
+
+mf.game(iniTree)

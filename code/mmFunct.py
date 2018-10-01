@@ -86,3 +86,43 @@ def minmax(myTree):
                     Min=aux
             myTree.score=Min
             return Min
+
+
+
+def chooseMyMove(myTree,gameHistory):
+    p = myTree.getPointers(gameHistory)
+    Max = 0
+    ind = 0
+    cont = 0
+    for branch in p.pointers:
+        print(branch.score,end=" ")
+        if branch.score > Max:
+            Max = branch.score
+            ind = cont
+        cont += 1
+    print("max: {}".format(Max))
+    return ind;
+            
+def game(myTree):
+    gameHistory = []
+    myState = myTree.getPointers(gameHistory)
+    #print(win(myState.config))
+    while (not win(myState.config)[0]) and (myState.level < 9):
+        #for i in range(6):
+        #print(myState.currentSymb)
+        myState.printBranch()
+        nextInd = 0
+        if myState.currentSymb == 'o':
+            #play my turn and show
+            nextInd = chooseMyMove(myTree,gameHistory)
+            #print(gameHistory)
+        elif myState.currentSymb == 'x':
+            nextInd = int(input("Ingrese la posicion: "))
+            
+        gameHistory.append(nextInd)
+        
+        myState = myTree.getPointers(gameHistory)
+
+    print("Ha ganado {0} con la jugada:".format(win(myState.config)[1]))
+    myState.printBranch()
+    

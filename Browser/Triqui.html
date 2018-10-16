@@ -4,39 +4,48 @@
 
 <h2>Juego de triqui</h2>
 
-<table style="width:50%">
+<table style="width:30%" border="1">
   <tr>
-    <td><img src="blanco.png" id="1">1</td>
-    <td><img src="blanco.png" id="2">2</td>
-    <td><img src="blanco.png" id="3">3</td>
+    <td><img src="blank.png" class="casillas" width="100" id="1"></td>
+    <td><img src="blank.png" class="casillas" width="100" id="2"></td>
+    <td><img src="blank.png" class="casillas" width="100" id="3"></td>
   </tr>
   <tr>
-    <td><img src="blanco.png" id="1">4</td>
-    <td><img src="blanco.png" id="2">5</td>
-    <td><img src="blanco.png" id="3">6</td>
+    <td><img src="blank.png" class="casillas" width="100" id="4"></td>
+    <td><img src="blank.png" class="casillas" width="100" id="5"></td>
+    <td><img src="blank.png" class="casillas" width="100" id="6"></td>
   </tr>
   <tr>
-    <td><img src="blanco.png" id="1">7</td>
-    <td><img src="blanco.png" id="2">8</td>
-    <td><img src="blanco.png" id="3">9</td>
+    <td><img src="blank.png" class="casillas" width="100" id="7"></td>
+    <td><img src="blank.png" class="casillas" width="100" id="8"></td>
+    <td><img src="blank.png" class="casillas" width="100" id="9"></td>
   </tr>
 </table>
 
-</body>
-</html>
-
+<span id="demo"></span>
+    
 <script>
 
-    window.onload function() = {
-        
-        var casilla1 = window.getElementById("1");
-        
-        casilla1.onclick = function() {
-        
-            this.source = "circulo.png"
-        
-        };
-        
-    }; // Cierra window.onload
+//    document.getElementById("demo").innerHTML = "Bien";
+    
+
+    document.addEventListener("click", function(event) {
+              event.preventDefault();
+              
+        if (event.target.className == "casillas" ) {
+            document.getElementById("demo").innerHTML = event.target.src;
+            if (event.target.src.includes("blank.png")) {
+                event.target.src = "circle.png";                
+                document.getElementById("demo").innerHTML = "";
+            }
+            else {
+                document.getElementById("demo").innerHTML = "Casilla ya ocupada";
+            }
+        }
+
+    });
     
 </script>
+    
+</body>
+</html>

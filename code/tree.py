@@ -16,7 +16,10 @@ class Tree:
         print("score= ",self.score)
         print()
         
-    def addPointers(self):
+    def addPointers(self, begin):
+        mySymb = 'x'
+        if not begin:
+            mySymb = 'o'
         s = 'o' if self.currentSymb == 'x' else 'x'
         lev1 = self.level + 1
         if (lev1 <= self.maxLevel):
@@ -26,11 +29,11 @@ class Tree:
                 
             for t in self.pointers:
                 if not mf.win(t.config)[0]:
-                    t.addPointers()
+                    t.addPointers(begin)
                     if lev1 == 9:
                         t.score = 1
                 else:
-                    if mf.win(t.config)[1] == 'x':
+                    if mf.win(t.config)[1] == mySymb:
                         t.score = 2
                         
 

@@ -57,10 +57,7 @@ def nextConfig(config, symb):
     return newConf
 
 
-def minmax(myTree, begin):
-    notMySymb = 'x'
-    if begin:
-        notMySymb = 'o'
+def minmax(myTree):
     #print("pointers: ",myTree.pointers)
     #print(len(myTree.pointers),myTree.level)
     #p = myTree.printBranch()
@@ -68,12 +65,12 @@ def minmax(myTree, begin):
         #print("esta es una hoja y su puntaje es {}".format(myTree.score))
         return myTree.score
     else:
-        if myTree.currentSymb==notMySymb:
+        if myTree.currentSymb=='o':
             Max=0
             #print("pointers o: ",myTree.pointers)
             for p in myTree.pointers:
                 #print("buscando en hijos de o")
-                aux = minmax(p, begin)
+                aux = minmax(p)
                 if Max<aux:
                     Max=aux
             myTree.score=Max
@@ -84,7 +81,7 @@ def minmax(myTree, begin):
             for p in myTree.pointers:
                 #print("buscando en hijos de x")
                 #print("camila\n")
-                aux = minmax(p, begin)
+                aux = minmax(p)
                 if Min>aux:
                     Min=aux
             myTree.score=Min
@@ -106,13 +103,7 @@ def chooseMyMove(myTree,gameHistory):
     print("max: {}".format(Max))
     return ind;
             
-def game(myTree, begin):
-    mySymb = 'x'
-    notMySymb = 'o'
-    if not begin:
-        mySymb = 'o'
-        notMySymb = 'x'
-    #----------------------
+def game(myTree):
     gameHistory = []
     myState = myTree.getPointers(gameHistory)
     #print(win(myState.config))
@@ -121,21 +112,17 @@ def game(myTree, begin):
         #print(myState.currentSymb)
         myState.printBranch()
         nextInd = 0
-        if myState.currentSymb == notMySymb:
+        if myState.currentSymb == 'o':
             #play my turn and show
             nextInd = chooseMyMove(myTree,gameHistory)
             #print(gameHistory)
-        elif myState.currentSymb == mySymb:
+        elif myState.currentSymb == 'x':
             nextInd = int(input("Ingrese la posicion: "))
             
         gameHistory.append(nextInd)
         
         myState = myTree.getPointers(gameHistory)
 
-    winner =  win(myState.config)[1]
-    if winner == '-':
-        print("Empate")
-    else:
-        print("Ha ganado {0} con la jugada:".format(winner))
+    print("Ha ganado {0} con la jugada:".format(win(myState.config)[1]))
     myState.printBranch()
     

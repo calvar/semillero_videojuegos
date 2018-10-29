@@ -26,25 +26,183 @@
     
 <script>
 
-//    document.getElementById("demo").innerHTML = "Bien";
-    
+    window.onload = function() {
 
-    document.addEventListener("click", function(event) {
-              event.preventDefault();
-              
-        if (event.target.className == "casillas" ) {
-            document.getElementById("demo").innerHTML = event.target.src;
-            if (event.target.src.includes("blank.png")) {
-                event.target.src = "circle.png";                
-                document.getElementById("demo").innerHTML = "";
+        class Tree {
+            constructor(lev, maxLev, symb, conf) {
+                this.level = lev;
+                this.maxLevel = maxLev;
+                this.currentSymb = symb;
+                this.config = conf;
+                this.score = 0;
+                this.pointers = [];
             }
-            else {
-                document.getElementById("demo").innerHTML = "Casilla ya ocupada";
+
+            addPointers(begin) {
+                var mySymb = 'x';
+                if (!begin) {                
+                    mySymb = 'o';
+                }        
+
+                // var s = (this.currentSymb == 'x') ? 'o' : 'x';
+                var s = '';
+                if (this.currentSymb == 'x') {
+                    s = 'o';
+                } else {
+                    s = 'x';
+                }
+
+                var lev1 = this.level + 1;
+                if (lev1 <= this.maxLevel) {
+                    var newC = nextConfig(this.config, s);
+                    for (var i=0; i<newC.length; i++) {
+                        var c = newC[i];
+                        this.pointers.push(new Tree(lev1, this.maxLevel, s, c));                    
+                    }
+
+                    for (var i=0; i<this.pointers.length; i++) {
+                        var t = this.pointers[i];
+                        if (win(t.config)[0] == false) {
+                            t.addPointers(begin);
+                            if (lev1 == 9) {                            
+                                t.score = 1;                       
+                            }
+                        } else {
+                            if (win(t.config)[1] == mySymb) {                            
+                                t.score = 2;
+                            }
+                        }
+                    } 
+                } // cierra if this.maxLevel
+
             }
         }
+        
+        window.win = function(config) {
 
-    });
+            // Recieve a tic-tac-toe board configuration.
+            // Return if a symbol has won the match, and the symbol
+            var test1 = ((config[0][0]==config[1][1]) && (config[1][1]==config[2][2]));
+            if (test1) {
+                if (config[0][0] == 'x') {
+                    return [true, 'x'];                
+                } 
+                else if (config[0][0] == 'o') {
+                    return [true, 'o'];
+                }    
+            }
+            var test2 = (config[0][2]==config[1][1] && config[1][1]==config[2][0])
+            if (test2) {
+                if (config[0][2] == 'x') {
+                    return [true, 'x'];
+                }
+                else if (config[0][2] == 'o') {
+                    return [true, 'o'];
+                }
+            }
+            for (var i=0; i<3; i++) {
+                var test3 = (config[i][0]==config[i][1] && config[i][1]==config[i][2]);
+                if (test3) {
+                    if (config[i][0] == 'x') {
+                        return [true, 'x'];
+                    }
+                    else if (config[i][0] == 'o') {
+                        return [true, 'o'];
+                    }
+                }
+                test4 = (config[0][i]==config[1][i] && config[1][i]==config[2][i]);
+                if (test4) {
+                    if (config[0][i] == 'x') {
+                        return [true, 'x'];
+                    }
+                    else if (config[0][i] == 'o') {
+                        return [true, 'o'];
+                    }           
+                }
+            }
+            return [false,'-'];
+        } // fin win
+        
+        window.nextConfig = function(config, symb) {
+            // Recieve a configuration and return a list with all the
+            // possible configurations in the next move using symbol symb
+            var available = [];
+            for (var i=0; i<3; i++) {
+                for (var j=0; j<3; j++) {
+                    if (config[i][j] == '-') {
+                        available.push([i,j]);                        
+                    }
+                }
+            }
+            var newConf = [];
+            for (var i=0; i<available.length; i++) {
+                a = available[i];
+                var nc = [[],[],[]];
+                for (var x=0; x<3; x++) {
+                    for (var y=0; y<3; y++) {
+                        nc[x][y] = config[x][y];                                            
+                    }
+                }
+                nc[a[0]][a[1]] = symb;
+                newConf.push(nc);             
+            }
+            // printConfig(newConf[0]);
+            return newConf;
+
+        } // fin de nextConfig
+
+        window.printConfig = function(config) {
+            
+            for (var i=0; i<3; i++) {
+                for (var j=0; j<3; j++) {
+                    var indice = i*3 + j + 1;
+                    var imagen = '';
+                    if (config[i][j] == 'o') {
+                        imagen = 'circle.png';
+                    } else if (config[i][j] == 'x') {
+                        imagen = 'ex.png';
+                    } else {
+                        imagen = 'blank.png';
+                    }
+                    document.getElementById(indice).src = imagen;
+                }
+            }
+            
     
+        } // fin printConfig
+
+        document.addEventListener("click", function(event) {
+                  event.preventDefault();
+
+            if (event.target.className == "casillas" ) {
+                document.getElementById("demo").innerHTML = event.target.src;
+                if (event.target.src.includes("blank.png")) {
+                    event.target.src = "circle.png";                
+                    document.getElementById("demo").innerHTML = "";
+                }
+                else {
+                    document.getElementById("demo").innerHTML = "Casilla ya ocupada";
+                }
+            }
+
+        });
+
+    var begin = false;
+    
+    // Initialize the tree
+    console.log('Inicializando el árbol...');
+    var maxLev = 9;
+    var iniConf = [['-','-','-'],['-','-','-'],['-','-','-']];
+    var iniTree = new Tree(0, maxLev, 'o', iniConf);
+    // add the branches
+    iniTree.addPointers(begin);
+
+    console.log('Cantidad de hijos: ', iniTree.pointers.length);
+    printConfig(iniTree.pointers[1].config);
+
+        
+    } // fin onload
+
 </script>
     
 </body>

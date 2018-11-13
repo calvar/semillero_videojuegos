@@ -38,6 +38,14 @@
                 this.pointers = [];
             }
 
+            printBranch() {
+                
+                console.log("level= ",this.level);
+                console.log("symbol= ",this.currentSymb);
+                window.printConfig(self.config);
+                console.log("score= ",self.score);
+            } // fin printBranch
+
             addPointers(begin) {
                 var mySymb = 'x';
                 if (!begin) {                
@@ -76,7 +84,23 @@
                 } // cierra if this.maxLevel
 
             }
-        }
+            
+            getPointers(nvec) {
+                
+                if (nvec.length <= self.maxLevel)  {                    
+                    var comm = "";
+                    for (var i=0; i<nvec.length; i++) {
+                        comm += ".pointers[".concat(nvec[i]).concat("]");                        
+                    }
+                    return eval("self" + comm);
+                } else {
+                    console.log(nvec.length, "is grater than the tree level.");
+                    return;
+                }
+
+            } // end getPointers
+
+        } // fin class Tree
         
         window.win = function(config) {
 
@@ -171,6 +195,97 @@
     
         } // fin printConfig
 
+        window.minmax = function(myTree, begin) {
+                        
+            var notMySymb = 'x';
+            if (begin) {
+                notMySymb = 'o';            
+            }
+            if  (myTree.pointers.length == 0) {
+                return myTree.score;                
+            } else {            
+                var aux;
+                if (myTree.currentSymb==notMySymb) {                
+                    var Max=0;
+                    for (var i=0; i<myTree.pointers.length; i++) {
+                        aux = minmax(myTree.pointers[i], begin);
+                        if (Max<aux) {
+                            Max=aux;                                                    
+                        }
+                    }
+                    myTree.score=Max;
+                    return Max;
+                } else {                    
+                    var Min=1e10;
+                    for (var i=0; i<myTree.pointers.length; i++) {
+                        aux = minmax(myTree.pointers[i], begin);
+                        if (Min>aux) {
+                            Min=aux;                            
+                        }
+                    }
+                    myTree.score=Min;
+                    return Min;
+                }
+            }
+        } // fin minmax
+        
+        window.chooseMyMove = function(myTree,gameHistory) {
+            
+            var p = myTree.getPointers(gameHistory);
+            var Max = 0;
+            var ind = 0;
+            var cont = 0;
+            for (var i=0; i<p.pointers.length; i++) {            
+                var branch = p.pointers[i];
+                console.log(branch.score);
+                if (branch.score > Max){
+                    Max = branch.score;
+                    ind = cont;                    
+                }
+                cont += 1;
+            }
+            console.log("max: ", Max);
+            return ind;
+            
+        } // fin chooseMyMove
+        
+        window.game = function(myTree, begin) {            
+            
+            var mySymb = 'x';
+            var notMySymb = 'o';
+            if (!begin) {
+                mySymb = 'o';
+                notMySymb = 'x';                
+            }
+
+            var gameHistory = [];
+            var myState = myTree.getPointers(gameHistory);
+
+            while ((!win(myState.config)[0]) && (myState.level < 9)) {
+                
+                myState.printBranch();
+                var nextInd = 0;
+                if (myState.currentSymb == notMySymb) {
+                    nextInd = chooseMyMove(myTree,gameHistory);
+                } else if (myState.currentSymb == mySymb) {
+                    nextInd = int(input("Ingrese la posicion: "));                    
+                }
+
+                gameHistory.append(nextInd)
+
+                myState = myTree.getPointers(gameHistory)
+
+            }
+
+            winner =  win(myState.config)[1]
+            if winner == '-':
+                print("Empate")
+            else:
+                print("Ha ganado {0} con la jugada:".format(winner))
+            myState.printBranch()
+        } // fin game
+
+        
         document.addEventListener("click", function(event) {
                   event.preventDefault();
 
@@ -196,10 +311,15 @@
     var iniTree = new Tree(0, maxLev, 'o', iniConf);
     // add the branches
     iniTree.addPointers(begin);
+        
+    iniTree.score = minmax(iniTree, begin);
+    console.log('Score: ', iniTree.pointers[0].score);
 
-    console.log('Cantidad de hijos: ', iniTree.pointers.length);
-    printConfig(iniTree.pointers[1].config);
+    // console.log('Cantidad de hijos: ', iniTree.pointers.length);
+    // printConfig(iniTree.pointers[1].config);
 
+        
+    
         
     } // fin onload
 

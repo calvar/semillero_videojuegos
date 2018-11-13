@@ -90,8 +90,6 @@ def minmax(myTree, begin):
             myTree.score=Min
             return Min
 
-
-
 def chooseMyMove(myTree,gameHistory):
     p = myTree.getPointers(gameHistory)
     Max = 0
@@ -105,7 +103,7 @@ def chooseMyMove(myTree,gameHistory):
         cont += 1
     print("max: {}".format(Max))
     return ind;
-            
+
 def game(myTree, begin):
     mySymb = 'x'
     notMySymb = 'o'
@@ -127,9 +125,9 @@ def game(myTree, begin):
             #print(gameHistory)
         elif myState.currentSymb == mySymb:
             nextInd = int(input("Ingrese la posicion: "))
-            
+
         gameHistory.append(nextInd)
-        
+
         myState = myTree.getPointers(gameHistory)
 
     winner =  win(myState.config)[1]
@@ -138,4 +136,3 @@ def game(myTree, begin):
     else:
         print("Ha ganado {0} con la jugada:".format(winner))
     myState.printBranch()
-    
